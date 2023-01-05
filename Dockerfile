@@ -1,11 +1,25 @@
+FROM alpine:latest
+
 ARG GHIDRA_VERSION=latest
-FROM alpine 
+ARG JDK_VERSION=openjdk11
 
-RUN apk --update add openjdk11 gradle unzip python3 py3-pip
+RUN apk --update add \
+    ${JDK_VERSION} \
+    bash \
+    gradle \
+    unzip \
+    python3 \
+    py3-pip
 
+# Install requests for ghidra-grabber.py
 RUN python3 -m pip install requests
-COPY bin/ghidra-grabber.py /usr/local/bin
-RUN /usr/local/bin/ghidra-grabber.py --version=${GHIDRA_VERSION} /ghidra
-env GHIDRA_INSTALL_DIR=/ghidra
+COPY --chmod=0755 bin/ghidra-grabber.py /usr/local/bin
 
-CMD gradle
+# Set up environment
+ENV GHIDRA_INSTALL_DIR=/ghidra
+
+# Install Ghidra
+RUN /usr/local/bin/ghidra-grabber.py --version=${GHIDRA_VERSION} /${GHIDRA_INSTALL_DIR}
+
+# Set up entrypoint
+ENTRYPOINT [ "/bin/bash", "-c" ]
