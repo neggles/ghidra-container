@@ -89,9 +89,9 @@ def install_ghidra(zip_file: PathLike, destdir: PathLike) -> None:
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-u", "--url", help="Ghidra zip URL. Defaults to latest from Github", type=str)
-parser.add_argument("-p", "--path", help="Path to install Ghidra to", type=Path)
 parser.add_argument("-l", "--list", help="List available releases", action="store_true", default=False)
 parser.add_argument("-v", "--version", help="Ghidra version to install. Defaults to latest", type=str)
+parser.add_argument("path", help="Path to install in", type=Path, default=Path.cwd().joinpath("ghidra"))
 
 if __name__ == "__main__":
     args = parser.parse_args()
