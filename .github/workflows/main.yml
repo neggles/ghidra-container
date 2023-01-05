@@ -96,8 +96,7 @@ jobs:
       - name: Build and Push Versioned Tags
         uses: docker/build-push-action@v3
         with:
-          context: ./
-          file: ./Dockerfile
+          context: .
           platforms: ${{  env.platforms }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
